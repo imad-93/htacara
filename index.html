@@ -1,415 +1,312 @@
-
-<!DOCTYPE html>
+<!doctype html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#101b2d">
-<title>HT Digital</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="theme-color" content="#111418">
+<title>Web HT</title>
 <style>
-*{box-sizing:border-box}
-body{margin:0;background:#101b2d;color:#fff;font-family:Arial,sans-serif;min-height:100vh}
-button,input,select{font:inherit}
-.app{max-width:520px;margin:auto;padding:22px 18px 35px}
-.header{text-align:center;padding:20px 0 25px}
-.logo{width:65px;height:65px;border-radius:20px;background:#1c9b68;display:grid;place-items:center;margin:auto;font-size:32px}
-.header h1{font-size:27px;margin:13px 0 5px;letter-spacing:1px}
-.header p{color:#9eafc5;font-size:13px;margin:0}
-.panel{background:#1b2a40;border:1px solid #30425c;border-radius:17px;padding:18px;margin-bottom:15px}
-.label{font-size:12px;color:#9eafc5;margin-bottom:8px;display:block}
-input,select{width:100%;background:#101b2d;border:1px solid #3a4d67;color:#fff;border-radius:10px;padding:13px;outline:none}
-input:focus,select:focus{border-color:#20bd83}
-.row{display:flex;gap:10px}
-.row>*{flex:1;min-width:0}
-.status{display:flex;align-items:center;gap:9px;font-size:13px;color:#b6c5d8}
-.dot{width:9px;height:9px;border-radius:50%;background:#68788c}
-.dot.green{background:#20d68b;box-shadow:0 0 10px #20d68b}
-.dot.red{background:#f05b62}
-.channel-title{font-size:12px;color:#9eafc5;margin-bottom:8px}
-.channel-name{font-size:23px;font-weight:bold}
-.speaker{margin-top:10px;color:#b6c5d8;font-size:13px;min-height:18px}
-.ptt-wrap{display:flex;justify-content:center;padding:22px 0}
-.ptt{width:205px;height:205px;border-radius:50%;border:9px solid #29435b;background:#168b60;color:#fff;font-size:24px;font-weight:bold;cursor:pointer;box-shadow:0 12px 35px #0005;touch-action:none;user-select:none;transition:.12s}
-.ptt:disabled{background:#34445a;border-color:#40516a;color:#aab7c8;cursor:not-allowed;box-shadow:none}
-.ptt.active{background:#d94c4c;border-color:#ff8585;transform:scale(.96);box-shadow:0 0 35px #e34e4e66}
-.hint{text-align:center;color:#9eafc5;font-size:12px;margin-top:-8px}
-.primary{width:100%;border:0;border-radius:10px;background:#168b60;color:#fff;padding:14px;font-weight:bold;cursor:pointer}
-.primary:disabled{opacity:.5;cursor:not-allowed}
-.secondary{border:1px solid #465a74;background:#253750;color:#fff;padding:12px;border-radius:10px;cursor:pointer}
-.message{text-align:center;font-size:13px;color:#aebdd0;min-height:20px;margin:12px 0}
-.members{font-size:13px;color:#b6c5d8;line-height:1.8}
-.footer{text-align:center;color:#657991;font-size:11px;margin-top:25px}
-.hidden{display:none!important}
-@media(max-width:380px){.ptt{width:180px;height:180px}}
+  :root{
+    --bg:#111418; --card:#1a1f26; --line:#2a313b; --text:#e8ecf1; --mute:#8b96a5;
+    --accent:#34d399; --talk:#ef4444;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;height:100%;background:var(--bg);color:var(--text);
+    font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+  body{display:flex;justify-content:center}
+  .app{width:100%;max-width:440px;padding:20px 16px 28px;display:flex;flex-direction:column;gap:16px}
+  h1{font-size:18px;margin:0;font-weight:700;letter-spacing:.02em}
+  h1 span{color:var(--accent)}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px}
+  label{display:block;font-size:12px;color:var(--mute);margin-bottom:6px}
+  input[type=text]{width:100%;padding:12px 14px;border-radius:10px;border:1px solid var(--line);
+    background:#0f1317;color:var(--text);font-size:16px;outline:none}
+  input[type=text]:focus{border-color:var(--accent)}
+  .row{display:flex;gap:10px}
+  .row>*{flex:1}
+  .field+.field{margin-top:12px}
+  button{font:inherit;cursor:pointer}
+  .btn{padding:13px 14px;border-radius:10px;border:0;background:var(--accent);color:#06281c;font-weight:700;font-size:16px;width:100%}
+  .btn.ghost{background:transparent;border:1px solid var(--line);color:var(--text);font-weight:500}
+  .hint{font-size:12px;color:var(--mute);margin:10px 0 0;line-height:1.5}
+  .hidden{display:none!important}
+
+  .status{display:flex;align-items:center;justify-content:space-between;font-size:14px}
+  .dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--mute);margin-right:8px}
+  .dot.on{background:var(--accent);box-shadow:0 0 8px var(--accent)}
+  .chan{font-weight:700;letter-spacing:.08em}
+
+  .ptt-wrap{display:flex;justify-content:center;padding:10px 0}
+  #ptt{width:220px;height:220px;border-radius:50%;border:6px solid var(--line);background:#222932;color:var(--text);
+    font-size:20px;font-weight:800;letter-spacing:.06em;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;
+    touch-action:none;user-select:none;-webkit-user-select:none;transition:transform .08s, background .1s, border-color .1s}
+  #ptt small{font-size:12px;font-weight:500;color:var(--mute);letter-spacing:0}
+  #ptt.talking{background:var(--talk);border-color:#fca5a5;transform:scale(.97);color:#fff}
+  #ptt.talking small{color:#fee2e2}
+  #ptt.rx{border-color:var(--accent)}
+
+  .peers{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+  .peers li{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;border-radius:10px;background:#0f1317;font-size:14px}
+  .peers li.speaking{outline:1px solid var(--accent)}
+  .peers .tag{font-size:11px;color:var(--accent);font-weight:700}
+  .empty{color:var(--mute);font-size:13px;text-align:center;padding:6px}
+  input[type=range]{width:100%;accent-color:var(--accent)}
+  .err{color:#fca5a5;font-size:13px;margin-top:10px}
+  .lockrow{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--mute);margin-top:12px}
 </style>
 </head>
 <body>
 <div class="app">
-  <header class="header">
-    <div class="logo">📻</div>
-    <h1>HT DIGITAL</h1>
-    <p>Komunikasi suara langsung · Push To Talk</p>
-  </header>
+  <h1>WEB <span>HT</span></h1>
 
-  <section class="panel">
-    <label class="label" for="nickname">NAMA PANGGILAN</label>
-    <input id="nickname" maxlength="25" placeholder="Contoh: Petugas 01">
-    <div style="height:15px"></div>
-    <label class="label" for="channel">PILIH KANAL</label>
-    <select id="channel">
-      <option value="1">Kanal 1</option>
-      <option value="2">Kanal 2</option>
-      <option value="3">Kanal 3</option>
-      <option value="4">Kanal 4</option>
-      <option value="5">Kanal 5</option>
-    </select>
-    <div style="height:14px"></div>
-    <button class="primary" id="joinBtn">MASUK KANAL</button>
+  <!-- Layar masuk -->
+  <section id="join" class="card">
+    <div class="field">
+      <label for="name">Nama panggilan (opsional)</label>
+      <input id="name" type="text" maxlength="20" placeholder="mis. Budi" autocomplete="off">
+    </div>
+    <div class="field">
+      <label for="chan">Kode channel</label>
+      <input id="chan" type="text" maxlength="30" placeholder="mis. keluarga123" autocomplete="off" autocapitalize="off" spellcheck="false">
+    </div>
+    <div class="field">
+      <button id="joinBtn" class="btn">Masuk Channel</button>
+    </div>
+    <div id="joinErr" class="err hidden"></div>
+    <p class="hint">Semua orang yang memasukkan kode channel yang sama akan terhubung. Pakai kode yang sulit ditebak
+      kalau tidak ingin ada orang lain ikut masuk. Browser akan meminta izin mikrofon.</p>
   </section>
 
-  <section class="panel">
-    <div class="status">
-      <span class="dot" id="connectionDot"></span>
-      <span id="connectionText">Belum terhubung</span>
+  <!-- Layar HT -->
+  <section id="radio" class="hidden" style="display:flex;flex-direction:column;gap:16px">
+    <div class="card status">
+      <div><span id="dot" class="dot"></span><span id="statusTxt">Menghubungkan…</span></div>
+      <div class="chan" id="chanLabel"></div>
     </div>
-    <div style="height:20px"></div>
-    <div class="channel-title">KANAL AKTIF</div>
-    <div class="channel-name" id="activeChannel">Belum dipilih</div>
-    <div class="speaker" id="speakerText">Belum ada pengguna yang berbicara</div>
+
     <div class="ptt-wrap">
-      <button class="ptt" id="pttBtn" disabled>
-        <span id="pttText">BICARA</span>
+      <button id="ptt" aria-label="Tahan untuk bicara">
+        <span id="pttTxt">TAHAN<br>UNTUK BICARA</span>
+        <small>atau tahan tombol Spasi</small>
       </button>
     </div>
-    <div class="hint" id="pttHint">Masuk ke kanal untuk mulai berkomunikasi</div>
-    <div class="message" id="message"></div>
-    <button class="secondary" id="leaveBtn" style="width:100%" disabled>KELUAR DARI KANAL</button>
-  </section>
 
-  <section class="panel">
-    <div class="channel-title">PETUNJUK PENGGUNAAN</div>
-    <div class="members">
-      1. Masukkan nama panggilan.<br>
-      2. Pilih kanal komunikasi.<br>
-      3. Tekan dan tahan tombol BICARA.<br>
-      4. Lepaskan tombol setelah selesai.<br>
-      5. Jika kanal sedang digunakan, tunggu giliran.
+    <div class="card">
+      <label>Anggota di channel</label>
+      <ul id="peers" class="peers"></ul>
+      <div id="peersEmpty" class="empty">Belum ada orang lain. Bagikan kode channel ke teman.</div>
     </div>
+
+    <div class="card">
+      <label for="vol">Volume</label>
+      <input id="vol" type="range" min="0" max="1" step="0.05" value="1">
+      <div class="lockrow">
+        <input id="latch" type="checkbox">
+        <label for="latch" style="margin:0">Mode kunci: ketuk sekali untuk bicara, ketuk lagi untuk berhenti</label>
+      </div>
+    </div>
+
+    <button id="leaveBtn" class="btn ghost">Keluar Channel</button>
   </section>
-  <div class="footer">HT DIGITAL · Komunikasi realtime tanpa rekaman suara</div>
 </div>
 
+<div id="audios"></div>
+
 <script type="module">
-import {initializeApp} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
-import {getAuth,signInAnonymously,onAuthStateChanged} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
-import {getFirestore,doc,runTransaction,onSnapshot} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
-import {Room,RoomEvent,Track} from "https://esm.sh/livekit-client@2.5.1";
-
-const FIREBASE_CONFIG = {
-  apiKey: "ISI_API_KEY_FIREBASE",
-  authDomain: "ISI_PROJECT_ID.firebaseapp.com",
-  projectId: "ISI_PROJECT_ID",
-  appId: "ISI_APP_ID"
-};
-
-const TOKEN_SERVER_URL = "https://ALAMAT-BACKEND-TOKEN-ANDA";
-
-const app = initializeApp(FIREBASE_CONFIG);
-const auth = getAuth(app);
-const db = getFirestore(app);
+import { joinRoom, selfId } from 'https://esm.sh/trystero@0.21.5/torrent';
 
 const $ = id => document.getElementById(id);
-const state = {
-  uid:null,
-  room:null,
-  channel:null,
-  channelRef:null,
-  stopListener:null,
-  talking:false,
-  heartbeat:null,
-  busy:false
-};
+const APP_ID = 'web-ht-sederhana-v1';
 
-function message(text){
-  $("message").textContent = text;
+let room = null, micStream = null, micTrack = null;
+let peers = new Map();            // id -> {name, talking}
+let talking = false;
+let sendState = null;
+let myName = '';
+let audioCtx = null;
+
+// ----- Preferensi -----
+try {
+  $('name').value = localStorage.getItem('ht_name') || '';
+  $('chan').value = location.hash.slice(1) ? decodeURIComponent(location.hash.slice(1)) : (localStorage.getItem('ht_chan') || '');
+} catch {}
+
+// ----- Bunyi "roger beep" -----
+function beep(freq = 880, dur = 0.09) {
+  try {
+    audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+    const o = audioCtx.createOscillator(), g = audioCtx.createGain();
+    o.frequency.value = freq; o.type = 'sine';
+    g.gain.setValueAtTime(0.0001, audioCtx.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.25, audioCtx.currentTime + 0.01);
+    g.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + dur);
+    o.connect(g).connect(audioCtx.destination);
+    o.start(); o.stop(audioCtx.currentTime + dur + 0.02);
+  } catch {}
 }
 
-function connection(connected,text){
-  $("connectionDot").className = "dot" + (connected ? " green" : "");
-  $("connectionText").textContent = text;
-}
-
-function setTalkingUI(active){
-  $("pttBtn").classList.toggle("active",active);
-  $("pttText").textContent = active ? "BERBICARA" : "BICARA";
-  $("pttHint").textContent = active ? "Lepaskan tombol untuk berhenti" : "Tekan dan tahan untuk berbicara";
-}
-
-async function initialize(){
-  try{
-    const credential = await signInAnonymously(auth);
-    state.uid = credential.user.uid;
-    connection(false,"Siap digunakan");
-  }catch(error){
-    connection(false,"Gagal menginisialisasi aplikasi");
-    message("Periksa konfigurasi Firebase dan Anonymous Authentication.");
-    console.error(error);
-  }
-}
-
-async function getToken(channel,name){
-  const response = await fetch(TOKEN_SERVER_URL,{
-    method:"POST",
-    headers:{"Content-Type":"application/json"},
-    body:JSON.stringify({
-      room:"ht-kanal-"+channel,
-      identity:state.uid,
-      name:name
-    })
+// ----- UI -----
+function renderPeers() {
+  const ul = $('peers'); ul.innerHTML = '';
+  peers.forEach((p, id) => {
+    const li = document.createElement('li');
+    if (p.talking) li.classList.add('speaking');
+    const n = document.createElement('span');
+    n.textContent = p.name || ('Anggota ' + id.slice(0, 4));
+    li.appendChild(n);
+    if (p.talking) { const t = document.createElement('span'); t.className = 'tag'; t.textContent = 'BICARA'; li.appendChild(t); }
+    ul.appendChild(li);
   });
-  if(!response.ok) throw new Error("Gagal mendapatkan token komunikasi.");
-  const data = await response.json();
-  if(!data.token || !data.wsUrl) throw new Error("Respons token server tidak lengkap.");
-  return data;
+  $('peersEmpty').classList.toggle('hidden', peers.size > 0);
+  const anyRx = [...peers.values()].some(p => p.talking);
+  $('ptt').classList.toggle('rx', anyRx && !talking);
+  $('statusTxt').textContent = peers.size
+    ? `Terhubung · ${peers.size + 1} orang`
+    : 'Menunggu anggota lain…';
+  $('dot').classList.toggle('on', peers.size > 0);
 }
 
-async function joinChannel(){
-  if(!state.uid){
-    message("Aplikasi sedang mempersiapkan koneksi.");
-    return;
-  }
-  if(state.room) await leaveChannel();
+function showJoinError(msg) {
+  const e = $('joinErr'); e.textContent = msg; e.classList.remove('hidden');
+}
 
-  const channel = $("channel").value;
-  const name = $("nickname").value.trim() || "Pengguna";
-  $("joinBtn").disabled = true;
-  message("Menghubungkan ke kanal...");
-  connection(false,"Menghubungkan...");
+// ----- Masuk channel -----
+$('joinBtn').addEventListener('click', async () => {
+  $('joinErr').classList.add('hidden');
+  const chan = $('chan').value.trim().toLowerCase().replace(/\s+/g, '-');
+  if (!chan) return showJoinError('Isi kode channel dulu.');
+  myName = $('name').value.trim();
 
-  try{
-    const credentials = await getToken(channel,name);
-    const room = new Room({
-      adaptiveStream:true,
-      dynacast:true
+  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia)
+    return showJoinError('Browser tidak mendukung mikrofon, atau halaman tidak dibuka lewat HTTPS.');
+
+  try {
+    micStream = await navigator.mediaDevices.getUserMedia({
+      audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true },
+      video: false
     });
-
-    room.on(RoomEvent.TrackSubscribed,(track)=>{
-      if(track.kind === Track.Kind.Audio){
-        const audio = track.attach();
-        audio.autoplay = true;
-        audio.style.display = "none";
-        document.body.appendChild(audio);
-      }
-    });
-
-    room.on(RoomEvent.Disconnected,()=>{
-      if(state.room === room){
-        stopHeartbeat();
-        state.talking = false;
-        setTalkingUI(false);
-        $("pttBtn").disabled = true;
-        $("leaveBtn").disabled = true;
-        connection(false,"Koneksi terputus");
-      }
-    });
-
-    await room.connect(credentials.wsUrl,credentials.token);
-    state.room = room;
-    state.channel = channel;
-    state.channelRef = doc(db,"radioChannels","kanal-"+channel);
-
-    state.stopListener = onSnapshot(state.channelRef,(snapshot)=>{
-      const data = snapshot.data() || {};
-      const holder = data.holderName;
-      const active = data.expiresAt && data.expiresAt > Date.now();
-
-      if(active && holder){
-        $("speakerText").textContent = "Sedang berbicara: " + holder;
-        if(data.holderUid !== state.uid && !state.talking){
-          $("pttHint").textContent = "Kanal sedang digunakan. Tunggu giliran.";
-        }
-      }else{
-        $("speakerText").textContent = "Kanal sedang bebas";
-        if(!state.talking){
-          $("pttHint").textContent = "Tekan dan tahan untuk berbicara";
-        }
-      }
-    });
-
-    $("activeChannel").textContent = "Kanal " + channel;
-    $("pttBtn").disabled = false;
-    $("leaveBtn").disabled = false;
-    $("channel").disabled = true;
-    $("nickname").disabled = true;
-    $("joinBtn").textContent = "TERHUBUNG";
-    connection(true,"Terhubung · Siap menerima suara");
-    message("Berhasil masuk ke Kanal " + channel);
-  }catch(error){
-    console.error(error);
-    connection(false,"Gagal terhubung");
-    message(error.message || "Tidak dapat masuk ke kanal.");
-    if(state.room){
-      await state.room.disconnect();
-      state.room = null;
-    }
-  }finally{
-    $("joinBtn").disabled = false;
+  } catch (e) {
+    return showJoinError('Izin mikrofon ditolak. Aktifkan izin mikrofon untuk situs ini lalu coba lagi.');
   }
-}
+  micTrack = micStream.getAudioTracks()[0];
+  micTrack.enabled = false; // mati sampai tombol ditekan
 
-async function claimFloor(){
-  if(!state.room || !state.channelRef || state.talking || state.busy) return;
-  state.busy = true;
-  message("Meminta giliran bicara...");
+  try { localStorage.setItem('ht_name', myName); localStorage.setItem('ht_chan', chan); } catch {}
+  history.replaceState(null, '', '#' + encodeURIComponent(chan));
 
-  try{
-    const name = $("nickname").value.trim() || "Pengguna";
-    const now = Date.now();
-    const claimed = await runTransaction(db,async(transaction)=>{
-      const snapshot = await transaction.get(state.channelRef);
-      const data = snapshot.data() || {};
-      const active = data.holderUid && data.expiresAt > now;
+  audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+  if (audioCtx.state === 'suspended') audioCtx.resume();
 
-      if(active && data.holderUid !== state.uid) return false;
-
-      transaction.set(state.channelRef,{
-        holderUid:state.uid,
-        holderName:name,
-        expiresAt:now + 15000
-      });
-      return true;
-    });
-
-    if(!claimed){
-      message("Kanal sedang digunakan. Tunggu sampai pengguna lain selesai.");
-      return;
-    }
-
-    await state.room.localParticipant.setMicrophoneEnabled(true);
-    state.talking = true;
-    setTalkingUI(true);
-    message("Silakan berbicara.");
-    startHeartbeat();
-  }catch(error){
-    console.error(error);
-    await releaseFloor();
-    message("Tidak berhasil mengambil giliran bicara.");
-  }finally{
-    state.busy = false;
-  }
-}
-
-function startHeartbeat(){
-  stopHeartbeat();
-  state.heartbeat = setInterval(async()=>{
-    if(!state.talking || !state.channelRef) return;
-    try{
-      const now = Date.now();
-      await runTransaction(db,async(transaction)=>{
-        const snapshot = await transaction.get(state.channelRef);
-        const data = snapshot.data() || {};
-        if(data.holderUid !== state.uid) throw new Error("Giliran bicara telah berakhir.");
-        transaction.update(state.channelRef,{expiresAt:now + 15000});
-      });
-    }catch(error){
-      console.error(error);
-      await releaseFloor();
-      message("Giliran bicara berakhir. Silakan coba lagi.");
-    }
-  },5000);
-}
-
-function stopHeartbeat(){
-  if(state.heartbeat){
-    clearInterval(state.heartbeat);
-    state.heartbeat = null;
-  }
-}
-
-async function releaseFloor(){
-  stopHeartbeat();
-  const wasTalking = state.talking;
-  state.talking = false;
-  setTalkingUI(false);
-
-  if(state.room){
-    try{
-      await state.room.localParticipant.setMicrophoneEnabled(false);
-    }catch(error){
-      console.error(error);
-    }
-  }
-
-  if(wasTalking && state.channelRef){
-    try{
-      await runTransaction(db,async(transaction)=>{
-        const snapshot = await transaction.get(state.channelRef);
-        const data = snapshot.data() || {};
-        if(data.holderUid === state.uid){
-          transaction.set(state.channelRef,{
-            holderUid:null,
-            holderName:null,
-            expiresAt:0
-          });
-        }
-      });
-    }catch(error){
-      console.error(error);
-    }
-  }
-}
-
-async function leaveChannel(){
-  await releaseFloor();
-  stopHeartbeat();
-
-  if(state.stopListener){
-    state.stopListener();
-    state.stopListener = null;
-  }
-
-  if(state.room){
-    await state.room.disconnect();
-    state.room = null;
-  }
-
-  state.channel = null;
-  state.channelRef = null;
-  $("activeChannel").textContent = "Belum dipilih";
-  $("speakerText").textContent = "Belum ada pengguna yang berbicara";
-  $("pttBtn").disabled = true;
-  $("leaveBtn").disabled = true;
-  $("channel").disabled = false;
-  $("nickname").disabled = false;
-  $("joinBtn").textContent = "MASUK KANAL";
-  $("pttHint").textContent = "Masuk ke kanal untuk mulai berkomunikasi";
-  connection(false,"Belum terhubung");
-  message("Anda telah keluar dari kanal.");
-}
-
-$("joinBtn").addEventListener("click",joinChannel);
-$("leaveBtn").addEventListener("click",leaveChannel);
-
-$("pttBtn").addEventListener("pointerdown",async(event)=>{
-  event.preventDefault();
-  if(!$("pttBtn").disabled){
-    $("pttBtn").setPointerCapture(event.pointerId);
-    await claimFloor();
-  }
+  startRoom(chan);
 });
 
-$("pttBtn").addEventListener("pointerup",releaseFloor);
-$("pttBtn").addEventListener("pointercancel",releaseFloor);
-$("pttBtn").addEventListener("lostpointercapture",()=>{
-  if(state.talking) releaseFloor();
+function startRoom(chan) {
+  room = joinRoom({ appId: APP_ID }, chan);
+  const [send, onState] = room.makeAction('state');
+  sendState = send;
+
+  $('chanLabel').textContent = '#' + chan;
+  $('join').classList.add('hidden');
+  $('radio').classList.remove('hidden');
+  peers.clear(); renderPeers();
+
+  room.onPeerJoin(id => {
+    peers.set(id, { name: '', talking: false });
+    room.addStream(micStream, id);          // kirim mic (dalam keadaan mute) ke anggota baru
+    sendState({ name: myName, talking }, id);
+    renderPeers();
+  });
+
+  room.onPeerLeave(id => {
+    peers.delete(id);
+    const el = document.getElementById('a-' + id);
+    if (el) el.remove();
+    renderPeers();
+  });
+
+  room.onPeerStream((stream, id) => {
+    let el = document.getElementById('a-' + id);
+    if (!el) {
+      el = document.createElement('audio');
+      el.id = 'a-' + id; el.autoplay = true; el.playsInline = true;
+      $('audios').appendChild(el);
+    }
+    el.srcObject = stream;
+    el.volume = parseFloat($('vol').value);
+    el.play().catch(() => {});
+  });
+
+  onState((data, id) => {
+    const p = peers.get(id) || { name: '', talking: false };
+    const was = p.talking;
+    p.name = (data && data.name) || p.name;
+    p.talking = !!(data && data.talking);
+    peers.set(id, p);
+    if (!was && p.talking) beep(660, 0.07);
+    if (was && !p.talking) beep(990, 0.07);
+    renderPeers();
+  });
+}
+
+// ----- Push to talk -----
+function setTalking(on) {
+  if (!room || on === talking) return;
+  talking = on;
+  micTrack.enabled = on;
+  $('ptt').classList.toggle('talking', on);
+  $('pttTxt').innerHTML = on ? 'BERBICARA…' : 'TAHAN<br>UNTUK BICARA';
+  sendState({ name: myName, talking: on });
+  if (on) beep(1200, 0.06); else beep(800, 0.06);
+  renderPeers();
+}
+
+const ptt = $('ptt');
+let pointerDown = false;
+ptt.addEventListener('pointerdown', e => {
+  e.preventDefault();
+  if ($('latch').checked) { setTalking(!talking); return; }
+  pointerDown = true; ptt.setPointerCapture(e.pointerId); setTalking(true);
+});
+const release = e => {
+  if ($('latch').checked || !pointerDown) return;
+  pointerDown = false; setTalking(false);
+};
+ptt.addEventListener('pointerup', release);
+ptt.addEventListener('pointercancel', release);
+ptt.addEventListener('contextmenu', e => e.preventDefault());
+
+window.addEventListener('keydown', e => {
+  if (e.code !== 'Space' || e.repeat || !room) return;
+  if (document.activeElement && document.activeElement.tagName === 'INPUT') return;
+  e.preventDefault();
+  if ($('latch').checked) setTalking(!talking); else setTalking(true);
+});
+window.addEventListener('keyup', e => {
+  if (e.code !== 'Space' || !room || $('latch').checked) return;
+  setTalking(false);
+});
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden && !$('latch').checked) setTalking(false);
 });
 
-window.addEventListener("beforeunload",()=>{
-  stopHeartbeat();
-  if(state.room) state.room.disconnect();
+// ----- Volume -----
+$('vol').addEventListener('input', () => {
+  document.querySelectorAll('#audios audio').forEach(a => a.volume = parseFloat($('vol').value));
 });
 
-initialize();
+// ----- Keluar -----
+$('leaveBtn').addEventListener('click', () => {
+  setTalking(false);
+  if (room) room.leave();
+  room = null;
+  if (micStream) micStream.getTracks().forEach(t => t.stop());
+  micStream = micTrack = null;
+  $('audios').innerHTML = '';
+  peers.clear();
+  $('radio').classList.add('hidden');
+  $('join').classList.remove('hidden');
+});
+window.addEventListener('beforeunload', () => { if (room) room.leave(); });
 </script>
 </body>
 </html>
